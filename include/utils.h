@@ -9,4 +9,11 @@ char* read_file_to_buffer(const char *filepath, long *file_size);
 // (e.g., "text/css") for the "Content-Type" HTTP header.
 const char* get_mime_type(const char *filepath);
 
+// Validates the URI to prevent Directory Traversal attacks.
+// Returns 1 if the URI is safe, 0 if it contains malicious patterns.
+int is_safe_uri(const char *uri);
+
+// Decodes URL-encoded strings (e.g., "%2E" to ".", "%20" to " ").
+void url_decode(const char *src, char *dest);
+
 #endif
