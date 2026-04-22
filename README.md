@@ -7,6 +7,8 @@
 
 **Vento** is a lightweight, blazing-fast, and multithreaded HTTP web server written from scratch in pure C. It utilizes raw POSIX sockets to serve static files and dynamic API responses with minimal overhead, making it an excellent educational resource for understanding how the web works under the hood.
 
+![screenshot](screenshot.png)
+
 ## Features
 
 - **Pure C Implementation:** No external dependencies, just standard C and POSIX libraries.
