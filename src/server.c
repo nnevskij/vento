@@ -137,7 +137,7 @@ void *handle_client(void *arg) {
 void start_server(ServerConfig config) {
    struct sigaction sa;
    sa.sa_handler = handle_signal;
-   sa.sa_flags = 0; // Important: Do NOT use SA_RESTART, so accept() can be interrupted
+   sa.sa_flags = 0;
    sigemptyset(&sa.sa_mask);
    sigaction(SIGINT, &sa, NULL);
    sigaction(SIGTERM, &sa, NULL);
@@ -171,7 +171,15 @@ void start_server(ServerConfig config) {
       exit(EXIT_FAILURE);
    }
 
-   printf("Vento is blowing at [http://localhost:%d]\n\n", config.port);
+   printf("          ▄▄ ▄▄ ▄▄▄▄▄ ▄▄  ▄▄ ▄▄▄▄▄▄ ▄▄▄            \n"
+          "▄▀▀▄  █   ██▄██ ██▄▄  ███▄██   ██  ██▀██   ▄▀▀▄  █ \n"
+          "▀   ▀▀     ▀█▀  ██▄▄▄ ██ ▀██   ██  ▀███▀   ▀   ▀▀  \n\n"
+          "[ Vento WS is Blowing ]\n"
+          "-------------------------------\n"
+          "Listening on : http://localhost:%d\n"
+          "Document Root: %s\n"
+          "Press Ctrl+C to shut down\n\n",
+          config.port, config.document_root);
 
    while (server_running) {
       if ((client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
@@ -199,11 +207,9 @@ void start_server(ServerConfig config) {
          continue;
       }
 
-      // Detach the thread so that its resources are automatically released
-      // back to the system without the need for another thread to join with it.
       pthread_detach(thread_id);
    }
 
-   printf("\nShutting down Vento gracefully...\n");
+   printf("\nShutting down Vento...\n");
    close(server_fd);
 }
