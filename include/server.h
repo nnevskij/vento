@@ -2,6 +2,9 @@
 #define SERVER_H
 
 #include "config.h"
+#include <time.h>
+
+#define CONNECTION_TIMEOUT 30
 
 enum ClientStatus {
     STATE_READING,
@@ -18,6 +21,11 @@ struct ClientState {
     enum ClientStatus status;
     char client_ip[64];
     char document_root[256];
+    time_t last_active_time;
+    int file_fd;
+    off_t file_offset;
+    size_t file_size;
+    int keep_alive;
 };
 
 // Starts the server and listens on a specific port based on the provided configuration.

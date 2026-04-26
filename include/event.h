@@ -22,6 +22,6 @@ int event_add(int efd, int fd, int is_server);
 int event_mod(int efd, int fd, int state);
 
 // Blocks and returns triggered events.
-int event_wait(int efd, struct VentoEvent *events, int max_events);
+int event_wait(int efd, struct VentoEvent *events, int max_events, int timeout_ms);
 
 #endif

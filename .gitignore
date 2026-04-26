@@ -2,4 +2,4 @@
 .vscode/
 bin/
 obj/
-vento.log
+vento.log*.bin

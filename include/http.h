@@ -17,6 +17,6 @@ HttpRequest parse_http_request(const char *raw_request);
 // Builds the HTTP response (headers + body) based on the requested file.
 // Returns a dynamically allocated string (remember to free it!).
 // Updated: Now accepts an HTTP status code (e.g., "200 OK", "404 Not Found")
-char* build_http_response(const char *file_path, const char *status_code, int *response_length);
+char* build_http_response(const char *file_path, const char *status_code, int *response_length, int keep_alive);
 
 #endif

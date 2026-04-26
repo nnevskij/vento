@@ -1,6 +1,7 @@
 #include "../include/event.h"
 #include <stddef.h>
 #include <unistd.h>
+#include <time.h>
 
 #ifdef __linux__
 #include <sys/epoll.h>
@@ -30,9 +31,9 @@ int event_mod(int efd, int fd, int state) {
 }
 
 // Blocks and returns triggered events.
-int event_wait(int efd, struct VentoEvent *events, int max_events) {
+int event_wait(int efd, struct VentoEvent *events, int max_events, int timeout_ms) {
     struct epoll_event ep_events[max_events];
-    int n = epoll_wait(efd, ep_events, max_events, -1);
+    int n = epoll_wait(efd, ep_events, max_events, timeout_ms);
     for (int i = 0; i < n; i++) {
         events[i].fd = ep_events[i].data.fd;
         if ((ep_events[i].events & EPOLLERR) || (ep_events[i].events & EPOLLHUP) || (ep_events[i].events & EPOLLRDHUP)) {
@@ -78,11 +79,19 @@ int event_mod(int efd, int fd, int state) {
 }
 
 // Blocks and returns triggered events.
-int event_wait(int efd, struct VentoEvent *events, int max_events) {
+int event_wait(int efd, struct VentoEvent *events, int max_events, int timeout_ms) {
     struct kevent *kq_events = malloc(sizeof(struct kevent) * max_events);
     if (!kq_events) return -1;
     
-    int n = kevent(efd, NULL, 0, kq_events, max_events, NULL);
+    struct timespec ts;
+    struct timespec *ts_ptr = NULL;
+    if (timeout_ms >= 0) {
+        ts.tv_sec = timeout_ms / 1000;
+        ts.tv_nsec = (timeout_ms % 1000) * 1000000;
+        ts_ptr = &ts;
+    }
+    
+    int n = kevent(efd, NULL, 0, kq_events, max_events, ts_ptr);
     if (n > 0) {
         for (int i = 0; i < n; i++) {
             events[i].fd = kq_events[i].ident;
