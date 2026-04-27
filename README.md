@@ -7,6 +7,8 @@
 
 **Vento** is a high-performance, asynchronous, zero-copy HTTP server written entirely in pure C. Designed for massive concurrency and minimal resource overhead, Vento leverages modern POSIX APIs and kernel-level optimizations to deliver both static assets and dynamic responses with exceptional efficiency.
 
+![screenshot.png](screenshot.png)
+
 > **Disclaimer:** Vento is an educational high-performance project intended to demonstrate systems programming concepts, kernel-level I/O optimization, and non-blocking architecture. While fully functional, it is designed for learning and research purposes rather than immediate production deployment.
 
 ## Technical Architecture
